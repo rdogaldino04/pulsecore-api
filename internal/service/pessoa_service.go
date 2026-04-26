@@ -2,12 +2,31 @@ package service
 
 type Pessoa struct {
 	ID   int    `json:"id"`
-	Name string `json:"name"`
+	Nome string `json:"name"`
+}
+type CreatePessoaRequest struct {
+	Nome string `json:"nome" binding:"required,min=3"`
 }
 
+var pessoas = []Pessoa{
+	{ID: 1, Nome: "João"},
+	{ID: 2, Nome: "Maria"},
+}
+
+var nextID = 3
+
 func ListarPessoas() []Pessoa {
-	return []Pessoa{
-		{ID: 1, Name: "Alice"},
-		{ID: 2, Name: "Bob"},
+	return pessoas
+}
+
+func CriarPessoa(req CreatePessoaRequest) Pessoa {
+	pessoa := Pessoa{
+		ID:   nextID,
+		Nome: req.Nome,
 	}
+
+	pessoas = append(pessoas, pessoa)
+	nextID++
+
+	return pessoa
 }
