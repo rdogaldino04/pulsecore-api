@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"pulsecore-api/internal/handler"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-    fmt.Println("PulseCore API running 🚀")
+	router := gin.Default()
+
+	handler.RegisterPessoaRoutes(router)
+
+	router.Run(":8080")
 }
