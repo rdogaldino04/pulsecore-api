@@ -31,3 +31,7 @@ go.work.sum
 .idea/
 .vscode/*
 !.vscode/launch.json
+
+*.db
+*.sqlite
+*.sqlite3

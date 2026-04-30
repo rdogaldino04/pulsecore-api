@@ -13,8 +13,19 @@ func RegisterPessoaRoutes(r *gin.Engine) {
 }
 
 func getPessoas(c *gin.Context) {
-	result := service.ListarPessoas()
-	c.JSON(http.StatusOK, result)
+	result, err := service.ListarPessoas()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ApiResponse{
+			Success: false,
+			Error:   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, ApiResponse{
+		Success: true,
+		Data:    result,
+	})
 }
 
 func createPessoa(c *gin.Context) {
@@ -28,7 +39,14 @@ func createPessoa(c *gin.Context) {
 		return
 	}
 
-	pessoa := service.CriarPessoa(req)
+	pessoa, err := service.CriarPessoa(req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ApiResponse{
+			Success: false,
+			Error:   err.Error(),
+		})
+		return
+	}
 
 	c.JSON(http.StatusCreated, ApiResponse{
 		Success: true,
