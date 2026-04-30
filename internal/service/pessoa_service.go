@@ -1,32 +1,19 @@
 package service
 
-type Pessoa struct {
-	ID   int    `json:"id"`
-	Nome string `json:"name"`
-}
+import "pulsecore-api/internal/repository"
+
 type CreatePessoaRequest struct {
 	Nome string `json:"nome" binding:"required,min=3"`
 }
 
-var pessoas = []Pessoa{
-	{ID: 1, Nome: "João"},
-	{ID: 2, Nome: "Maria"},
+func ListarPessoas() []repository.Pessoa {
+	return repository.Listar()
 }
 
-var nextID = 3
-
-func ListarPessoas() []Pessoa {
-	return pessoas
-}
-
-func CriarPessoa(req CreatePessoaRequest) Pessoa {
-	pessoa := Pessoa{
-		ID:   nextID,
+func CriarPessoa(req CreatePessoaRequest) repository.Pessoa {
+	p := repository.Pessoa{
 		Nome: req.Nome,
 	}
 
-	pessoas = append(pessoas, pessoa)
-	nextID++
-
-	return pessoa
+	return repository.Criar(p)
 }
