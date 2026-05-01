@@ -1,21 +1,18 @@
 package repository
 
-type Pessoa struct {
-	ID   int    `json:"id"`
-	Nome string `json:"name"`
-}
+import "pulsecore-api/internal/model"
 
-func Listar() ([]Pessoa, error) {
+func Listar() ([]model.Pessoa, error) {
 	rows, err := DB.Query("SELECT id, nome FROM pessoas")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var pessoas []Pessoa
+	var pessoas []model.Pessoa
 
 	for rows.Next() {
-		var p Pessoa
+		var p model.Pessoa
 		err := rows.Scan(&p.ID, &p.Nome)
 		if err != nil {
 			return nil, err
@@ -26,7 +23,7 @@ func Listar() ([]Pessoa, error) {
 	return pessoas, nil
 }
 
-func Criar(p Pessoa) (Pessoa, error) {
+func Criar(p model.Pessoa) (model.Pessoa, error) {
 	result, err := DB.Exec("INSERT INTO pessoas (nome) VALUES (?)", p.Nome)
 	if err != nil {
 		return p, err
