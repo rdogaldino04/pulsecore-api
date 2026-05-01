@@ -9,7 +9,6 @@ import (
 
 func main() {
 	repository.InitDB()
-	repository.Migrate()
 
 	router := gin.Default()
 

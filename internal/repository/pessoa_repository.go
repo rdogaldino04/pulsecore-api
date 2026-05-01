@@ -24,13 +24,10 @@ func Listar() ([]model.Pessoa, error) {
 }
 
 func Criar(p model.Pessoa) (model.Pessoa, error) {
-	result, err := DB.Exec("INSERT INTO pessoas (nome) VALUES (?)", p.Nome)
-	if err != nil {
-		return p, err
-	}
+	err := DB.QueryRow(
+		"INSERT INTO pessoas (nome) VALUES ($1) RETURNING id",
+		p.Nome,
+	).Scan(&p.ID)
 
-	id, _ := result.LastInsertId()
-	p.ID = int(id)
-
-	return p, nil
+	return p, err
 }
