@@ -1,6 +1,7 @@
 package main
 
 import (
+	"pulsecore-api/internal/config"
 	"pulsecore-api/internal/handler"
 	"pulsecore-api/internal/repository"
 
@@ -8,6 +9,8 @@ import (
 )
 
 func main() {
+	config.LoadEnv()
+
 	repository.InitDB()
 
 	router := gin.Default()
